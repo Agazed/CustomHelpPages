@@ -1,0 +1,16 @@
+name: CustomHelpPages
+author: Agazed
+description: Auto modulating custom help pages
+website: http://agazed.net
+main: net.agazed.help.Help
+version: 1.0
+commands:
+  help:
+    description: Main command
+permissions:
+  help.help:
+    description: Main permission
+    default: true
+  help.reload:
+    description: Reload permission
+    default: op

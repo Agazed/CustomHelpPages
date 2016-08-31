@@ -1,0 +1,24 @@
+# Made by Agazed
+# Visit me @ agazed.net!
+
+# How many help messages do you want on one page?
+messages-per-page: 8
+
+# Do you want to display the top page counter?
+display-top-page-counter: true
+
+# Top page counter message. Use %CURRENTPAGE for current page and %PAGES for total pages.
+top-page-counter: '&7Page: %CURRENTPAGE/%PAGES'
+
+# Do you want to display the bottom page counter?
+display-bottom-page-counter: true
+
+# Top page counter message. Use %CURRENTPAGE for current page and %PAGES for total pages.
+bottom-page-counter: '&7Page: %CURRENTPAGE/%PAGES'
+
+# Your custom help messages!
+help-messages:
+- 'A message'
+- 'Another message'
+- '&2Colored message!'
+- 'The list goes on...'
