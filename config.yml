@@ -4,17 +4,17 @@
 # How many help messages do you want on one page?
 messages-per-page: 8
 
-# Do you want to display the top page counter?
-display-top-page-counter: true
+# Do you want to display the top header message?
+display-header: true
 
-# Top page counter message. Use %CURRENTPAGE for current page and %PAGES for total pages.
-top-page-counter: '&7Page: %CURRENTPAGE/%PAGES'
+# Top header message. Use %CURRENTPAGE for current page and %TOTALPAGES for total pages.
+header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
 
-# Do you want to display the bottom page counter?
-display-bottom-page-counter: true
+# Do you want to display the bottom footer message?
+display-footer: true
 
-# Top page counter message. Use %CURRENTPAGE for current page and %PAGES for total pages.
-bottom-page-counter: '&7Page: %CURRENTPAGE/%PAGES'
+# Bottom footer message. Use %CURRENTPAGE for current page and %TOTALPAGES for total pages.
+footer: '&7Page: %CURRENTPAGE/%TOTALPAGES'
 
 # Your custom help messages!
 help-messages:
