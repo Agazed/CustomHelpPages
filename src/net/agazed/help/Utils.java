@@ -29,7 +29,7 @@ public class Utils {
 	public static int getPossibleMessages(int page) {
 		return page * getSplitInterval();
 	}
-	
+
 	public static String getWhichList(CommandSender sender) {
 		int i = 0;
 		String list = "";
@@ -44,13 +44,13 @@ public class Utils {
 				}
 				i++;
 			}
-        }
+		}
 		if (i == 0) {
 			return "default";
 		}
 		return list;
 	}
-	
+
 	public static boolean isNotAnInt(String string) {
 		try {
 			Integer.parseInt(string);
@@ -68,7 +68,7 @@ public class Utils {
 	}
 
 	public static void reloadConfig(CommandSender sender) {
-		if (!sender.hasPermission("help.view")) {
+		if (!sender.hasPermission("help.reload")) {
 			sender.sendMessage(ChatColor.RED + "No permission!");
 			return;
 		}
