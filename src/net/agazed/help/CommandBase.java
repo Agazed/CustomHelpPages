@@ -16,9 +16,9 @@ public class CommandBase implements CommandExecutor {
 			}
 
 			if (args.length == 0) {
-				Utils.sendHeader(sender, 1);
-				Utils.getPage(sender, 1);
-				Utils.sendFooter(sender, 1);
+				Utils.sendHeader(sender, Utils.getWhichList(sender), 1);
+				Utils.getPage(sender, Utils.getWhichList(sender), 1);
+				Utils.sendFooter(sender, Utils.getWhichList(sender), 1);
 				return true;
 			}
 
@@ -29,18 +29,73 @@ public class CommandBase implements CommandExecutor {
 					return true;
 				}
 
-				if (Utils.isInvalid(sender, args[0])) {
+				if (Utils.isNotAnInt(args[0])) {
 					sender.sendMessage(ChatColor.RED + "Invalid page!");
 					return true;
 				}
 
 				int page = Integer.parseInt(args[0]);
 
-				Utils.sendHeader(sender, page);
-				Utils.getPage(sender, page);
-				Utils.sendFooter(sender, page);
+				if (Utils.isInvalid(sender, Utils.getWhichList(sender), page)) {
+					sender.sendMessage(ChatColor.RED + "Invalid page!");
+					return true;
+				}
+
+				Utils.sendHeader(sender, Utils.getWhichList(sender), page);
+				Utils.getPage(sender, Utils.getWhichList(sender), page);
+				Utils.sendFooter(sender, Utils.getWhichList(sender), page);
 				return true;
 			}
+
+			if (args.length == 2 && args[0].equalsIgnoreCase("view")) {
+
+				if (!sender.hasPermission("help.view")) {
+					sender.sendMessage(ChatColor.RED + "No permission!");
+					return true;
+				}
+
+				if (Utils.getHelpList(args[1]).isEmpty()) {
+					sender.sendMessage(ChatColor.RED + "List does not exist!");
+					return true;
+				}
+
+				Utils.sendHeader(sender, args[1], 1);
+				Utils.getPage(sender, args[1], 1);
+				Utils.sendFooter(sender, args[1], 1);
+				return true;
+			}
+
+			if (args.length == 3 && args[0].equalsIgnoreCase("view")) {
+
+				if (!sender.hasPermission("help.view")) {
+					sender.sendMessage(ChatColor.RED + "No permission!");
+					return true;
+				}
+
+				if (Utils.getHelpList(args[1]).isEmpty()) {
+					sender.sendMessage(ChatColor.RED + "List does not exist!");
+					return true;
+				}
+
+				if (Utils.isNotAnInt(args[2])) {
+					sender.sendMessage(ChatColor.RED + "Invalid page!");
+					return true;
+				}
+
+				int page = Integer.parseInt(args[2]);
+
+				if (Utils.isInvalid(sender, args[1], page)) {
+					sender.sendMessage(ChatColor.RED + "Invalid page!");
+					return true;
+				}
+
+				Utils.sendHeader(sender, args[1], page);
+				Utils.getPage(sender, args[1], page);
+				Utils.sendFooter(sender, args[1], page);
+				return true;
+			}
+			sender.sendMessage(ChatColor.RED + "Invalid argument(s)!");
+			return true;
 		}
 		return true;
 	}

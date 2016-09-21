@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 public class Utils {
 
@@ -13,37 +14,61 @@ public class Utils {
 		Utils.help = help;
 	}
 
-	public static List<String> getHelpList() {
-		return help.getConfig().getStringList("help-messages");
+	public static List<String> getHelpList(String list) {
+		return help.getConfig().getStringList(list);
 	}
 
 	public static int getSplitInterval() {
 		return help.getConfig().getInt("messages-per-page");
 	}
 
-	public static int getTotalPages() {
-		return (int) Math.ceil((double) getHelpList().size() / (double) getSplitInterval());
+	public static int getTotalPages(String list) {
+		return (int) Math.ceil((double) getHelpList(list).size() / (double) getSplitInterval());
 	}
 
-	public static int getPossiblePages(int page) {
+	public static int getPossibleMessages(int page) {
 		return page * getSplitInterval();
 	}
-
-	public static boolean isInvalid(CommandSender sender, String arg) {
-		int page;
+	
+	public static String getWhichList(CommandSender sender) {
+		int i = 0;
+		String list = "";
+		for (PermissionAttachmentInfo perm : sender.getEffectivePermissions()) {
+			if (perm.getPermission().toString().startsWith("help.list.")) {
+				if (i > 0) {
+					return "default";
+				}
+				list = perm.getPermission().toString().replace("help.list.", "");
+				if (getHelpList(list).isEmpty()) {
+					return "default";
+				}
+				i++;
+			}
+        }
+		if (i == 0) {
+			return "default";
+		}
+		return list;
+	}
+	
+	public static boolean isNotAnInt(String string) {
 		try {
-			page = Integer.parseInt(arg);
+			Integer.parseInt(string);
 		} catch (NumberFormatException e) {
 			return true;
 		}
-		if (getHelpList().size() + getSplitInterval() <= getPossiblePages(page) || page < 1) {
+		return false;
+	}
+
+	public static boolean isInvalid(CommandSender sender, String list, int page) {
+		if (getHelpList(list).size() + getSplitInterval() <= getPossibleMessages(page) || page < 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public static void reloadConfig(CommandSender sender) {
-		if (!sender.hasPermission("help.reload")) {
+		if (!sender.hasPermission("help.view")) {
 			sender.sendMessage(ChatColor.RED + "No permission!");
 			return;
 		}
@@ -53,45 +78,45 @@ public class Utils {
 		return;
 	}
 
-	public static void sendHeader(CommandSender sender, int page) {
+	public static void sendHeader(CommandSender sender, String list, int page) {
 		if (help.getConfig().getBoolean("display-header")) {
 			String header = ChatColor.translateAlternateColorCodes('&',
-					help.getConfig().getString("header").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages())));
+					help.getConfig().getString("header").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))));
 			sender.sendMessage(header);
 		} else {
 			return;
 		}
 	}
 
-	public static void sendFooter(CommandSender sender, int page) {
+	public static void sendFooter(CommandSender sender, String list, int page) {
 		if (help.getConfig().getBoolean("display-footer")) {
 			String footer = ChatColor.translateAlternateColorCodes('&',
-					help.getConfig().getString("footer").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages())));
+					help.getConfig().getString("footer").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))));
 			sender.sendMessage(footer);
 		} else {
 			return;
 		}
 	}
 
-	public static void getPage(CommandSender sender, int page) {
+	public static void getPage(CommandSender sender, String list, int page) {
 
-		String pm = "";
+		String message = "";
 
-		if (getHelpList().size() <= getPossiblePages(page)) {
-			int modulus = getPossiblePages(page) - getHelpList().size();
-			List<String> sublist = getHelpList().subList(getPossiblePages(page) - getSplitInterval(), getPossiblePages(page) - modulus);
+		if (getHelpList(list).size() <= getPossibleMessages(page)) {
+			int modulus = getPossibleMessages(page) - getHelpList(list).size();
+			List<String> sublist = getHelpList(list).subList(getPossibleMessages(page) - getSplitInterval(), getPossibleMessages(page) - modulus);
 
 			for (int i = 0; i < sublist.size(); i++) {
-				pm = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
-				sender.sendMessage(pm);
+				message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
+				sender.sendMessage(message);
 			}
 			return;
 		}
 
-		List<String> sublist = getHelpList().subList(getPossiblePages(page) - getSplitInterval(), getPossiblePages(page));
+		List<String> sublist = getHelpList(list).subList(getPossibleMessages(page) - getSplitInterval(), getPossibleMessages(page));
 		for (int i = 0; i < sublist.size(); i++) {
-			pm = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
-			sender.sendMessage(pm);
+			message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
+			sender.sendMessage(message);
 		}
 		return;
 	}

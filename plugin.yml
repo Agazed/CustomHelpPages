@@ -3,7 +3,7 @@ author: Agazed
 description: Auto modulating custom help pages
 website: http://agazed.net
 main: net.agazed.help.Help
-version: 1.1
+version: 1.2
 commands:
   help:
     description: Main command
@@ -11,6 +11,9 @@ permissions:
   help.help:
     description: Main permission
     default: true
+  help.view:
+    description: View other pages
+    default: op
   help.reload:
     description: Reload permission
     default: op

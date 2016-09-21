@@ -1,4 +1,4 @@
-# Made by Agazed
+# Made by Agazed.
 # Visit me @ agazed.net!
 
 # How many help messages do you want on one page?
@@ -16,9 +16,19 @@ display-footer: true
 # Bottom footer message. Use %CURRENTPAGE for current page and %TOTALPAGES for total pages.
 footer: '&7Page: %CURRENTPAGE/%TOTALPAGES'
 
-# Your custom help messages!
-help-messages:
+# ---------- Your custom help messages ----------
+
+# This is the default list. People who have access to this list either have multiple list permissions, no list permissions, or the permission for the list they have is empty.
+default:
 - 'A message'
 - 'Another message'
 - '&2Colored message!'
 - 'The list goes on...'
+
+# Example: To grant access to this list, grant the permission "help.list.test".
+test:
+- 'Test list'
+
+# Another example. Again, to assign this list to people, simply give them the "help.list.foobar" permission. You can name a list anything you want.
+foobar:
+- 'Foobar!'
