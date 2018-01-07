@@ -3,7 +3,7 @@ author: Agazed
 description: Auto modulating custom help pages
 website: http://agazed.net
 main: net.agazed.help.Help
-version: 1.3
+version: 2.0
 commands:
   help:
     description: Main command

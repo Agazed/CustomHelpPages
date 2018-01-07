@@ -1,40 +1,57 @@
 # Made by Agazed.
 # Visit me @ agazed.net!
 
-# How many help messages do you want on one page?
-messages-per-page: 8
+# ---------- GROUP LISTS ---------- #
+# You can assign different groups different lists with "help.list.<list>
 
-# Do you want to display the top header message?
-display-header: true
+groups:
 
-#Shall the header be displayed on the last page?
-show-header-on-last-page: true
+  # This is the default list. People who have access to this list either have multiple list permissions or no list permissions.
+  default:
+    # How many help messages do you want on one page?
+    messages-per-page: 8
+    # Do you want to display the top header message?
+    display-header: true
+    #Shall the header be displayed on the last page?
+    show-header-on-last-page: true
+    # Top header message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE, %LIST.
+    header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
+    # Do you want to display the bottom footer message?
+    display-footer: true
+    #Shall the footer be displayed on the last page?
+    show-footer-on-last-page: false
+    # Bottom footer message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE, %LIST.
+    footer: '&7Type /help %NEXTPAGE to get to the next page'
+    messages:
+    - 'A message'
+    - 'Another message'
+    - '&2Colored message!'
+    - 'The list goes on...'
 
-# Top header message. Available variables: %NEXTPAGE, %CURRENTPAGE, %TOTALPAGES.
-header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
+  # Example: To grant access to this list, grant the permission "help.group.test".
+  test:
+    messages-per-page: 8
+    display-header: true
+    show-header-on-last-page: true
+    header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
+    display-footer: true
+    show-footer-on-last-page: false
+    footer: '&7Type /help %NEXTPAGE to get to the next page'
+    messages:
+    - 'Test list!'
+    
+# ---------- PAGE LISTS ---------- #
 
-# Do you want to display the bottom footer message?
-display-footer: true
+pages:
 
-#Shall the footer be displayed on the last page?
-show-footer-on-last-page: false
-
-# Bottom footer message. Available variables: %NEXTPAGE, %CURRENTPAGE, %TOTALPAGES.
-footer: '&7Type /help %NEXTPAGE to get to the next page'
-
-# ---------- Your custom help messages ----------
-
-# This is the default list. People who have access to this list either have multiple list permissions, no list permissions, or the permission for the list they have is empty.
-default:
-- 'A message'
-- 'Another message'
-- '&2Colored message!'
-- 'The list goes on...'
-
-# Example: To grant access to this list, grant the permission "help.list.test".
-test:
-- 'Test list'
-
-# Another example. Again, to assign this list to people, simply give them the "help.list.foobar" permission. You can name a list anything you want.
-foobar:
-- 'Foobar!'
+  # Custom page. Access with /help cool. Permission is "help.page.cool".
+  cool:
+    messages-per-page: 8
+    display-header: true
+    show-header-on-last-page: true
+    header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
+    display-footer: true
+    show-footer-on-last-page: false
+    footer: '&7Type /help %LIST %NEXTPAGE to get to the next page'
+    messages:
+    - 'Sick bruh.'
