@@ -31,21 +31,19 @@ public class Utils {
 	}
 
 	public static String getWhichList(CommandSender sender) {
-		int i = 0;
-		String list = "";
+		String list = null;
 		for (PermissionAttachmentInfo perm : sender.getEffectivePermissions()) {
 			if (perm.getPermission().toString().startsWith("help.list.")) {
-				if (i > 0) {
+				if (list != null) {
 					return "default";
 				}
 				list = perm.getPermission().toString().replace("help.list.", "");
 				if (getHelpList(list).isEmpty()) {
 					return "default";
 				}
-				i++;
 			}
 		}
-		if (i == 0) {
+		if (list == null) {
 			return "default";
 		}
 		return list;
@@ -60,7 +58,7 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean isInvalid(CommandSender sender, String list, int page) {
+	public static boolean isInvalid(String list, int page) {
 		if (getHelpList(list).size() + getSplitInterval() <= getPossibleMessages(page) || page < 1) {
 			return true;
 		}
@@ -80,8 +78,10 @@ public class Utils {
 
 	public static void sendHeader(CommandSender sender, String list, int page) {
 		if (help.getConfig().getBoolean("display-header")) {
-			String header = ChatColor.translateAlternateColorCodes('&',
-					help.getConfig().getString("header").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))));
+			if (help.getConfig().getBoolean("show-header-on-last-page") == false && isInvalid(list, page + 1)) {
+				return;
+			}
+			String header = ChatColor.translateAlternateColorCodes('&', help.getConfig().getString("header").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))).replace("%NEXTPAGE", Integer.toString(page + 1)));
 			sender.sendMessage(header);
 		} else {
 			return;
@@ -90,8 +90,10 @@ public class Utils {
 
 	public static void sendFooter(CommandSender sender, String list, int page) {
 		if (help.getConfig().getBoolean("display-footer")) {
-			String footer = ChatColor.translateAlternateColorCodes('&',
-					help.getConfig().getString("footer").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))));
+			if (help.getConfig().getBoolean("show-footer-on-last-page") == false && isInvalid(list, page + 1)) {
+				return;
+			}
+			String footer = ChatColor.translateAlternateColorCodes('&', help.getConfig().getString("footer").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))).replace("%NEXTPAGE", Integer.toString(page + 1)));
 			sender.sendMessage(footer);
 		} else {
 			return;

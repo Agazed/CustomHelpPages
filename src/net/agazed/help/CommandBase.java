@@ -36,7 +36,7 @@ public class CommandBase implements CommandExecutor {
 
 				int page = Integer.parseInt(args[0]);
 
-				if (Utils.isInvalid(sender, Utils.getWhichList(sender), page)) {
+				if (Utils.isInvalid(Utils.getWhichList(sender), page)) {
 					sender.sendMessage(ChatColor.RED + "Invalid page!");
 					return true;
 				}
@@ -84,7 +84,7 @@ public class CommandBase implements CommandExecutor {
 
 				int page = Integer.parseInt(args[2]);
 
-				if (Utils.isInvalid(sender, args[1], page)) {
+				if (Utils.isInvalid(args[1], page)) {
 					sender.sendMessage(ChatColor.RED + "Invalid page!");
 					return true;
 				}

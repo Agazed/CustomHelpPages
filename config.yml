@@ -7,14 +7,20 @@ messages-per-page: 8
 # Do you want to display the top header message?
 display-header: true
 
-# Top header message. Use %CURRENTPAGE for current page and %TOTALPAGES for total pages.
+#Shall the header be displayed on the last page?
+show-header-on-last-page: true
+
+# Top header message. Available variables: %NEXTPAGE, %CURRENTPAGE, %TOTALPAGES.
 header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
 
 # Do you want to display the bottom footer message?
 display-footer: true
 
-# Bottom footer message. Use %CURRENTPAGE for current page and %TOTALPAGES for total pages.
-footer: '&7Page: %CURRENTPAGE/%TOTALPAGES'
+#Shall the footer be displayed on the last page?
+show-footer-on-last-page: false
+
+# Bottom footer message. Available variables: %NEXTPAGE, %CURRENTPAGE, %TOTALPAGES.
+footer: '&7Type /help %NEXTPAGE to get to the next page'
 
 # ---------- Your custom help messages ----------
 
