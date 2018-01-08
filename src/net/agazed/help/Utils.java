@@ -10,24 +10,8 @@ public class Utils {
 
 	private static Help help;
 
-	public Utils(Help help) {
-		Utils.help = help;
-	}
-
 	public static List<String> getList(String list) {
 		return help.getConfig().getStringList(list + ".messages");
-	}
-
-	public static int getSplitInterval(String list) {
-		return help.getConfig().getInt(list + ".messages-per-page");
-	}
-
-	public static int getTotalPages(String list) {
-		return (int) Math.ceil((double) getList(list).size() / (double) getSplitInterval(list));
-	}
-
-	public static int getPossibleMessages(String list, int page) {
-		return page * getSplitInterval(list);
 	}
 
 	public static String getListGroup(CommandSender sender) {
@@ -46,17 +30,52 @@ public class Utils {
 		return list;
 	}
 
-	public static boolean isNotAnInt(String string) {
-		try {
-			Integer.parseInt(string);
-		} catch (NumberFormatException e) {
+	public static int getMaxMessages(String list, int page) {
+		return page * getSplit(list);
+	}
+
+	public static void getPage(CommandSender sender, String list, int page) {
+
+		String message = "";
+
+		if (getList(list).size() <= getMaxMessages(list, page)) {
+			int remainder = getMaxMessages(list, page) - getList(list).size();
+			List<String> sublist = getList(list).subList(getMaxMessages(list, page) - getSplit(list), getMaxMessages(list, page) - remainder);
+
+			for (int i = 0; i < sublist.size(); i++) {
+				message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
+				sender.sendMessage(message);
+			}
+			return;
+		}
+
+		List<String> sublist = getList(list).subList(getMaxMessages(list, page) - getSplit(list), getMaxMessages(list, page));
+		for (int i = 0; i < sublist.size(); i++) {
+			message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
+			sender.sendMessage(message);
+		}
+		return;
+	}
+
+	public static int getSplit(String list) {
+		return help.getConfig().getInt(list + ".messages-per-page");
+	}
+
+	public static int getTotalPages(String list) {
+		return (int) Math.ceil((double) getList(list).size() / (double) getSplit(list));
+	}
+
+	public static boolean isInvalid(String list, int page) {
+		if (getList(list).size() + getSplit(list) <= getMaxMessages(list, page) || page < 1) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isInvalid(String list, int page) {
-		if (getList(list).size() + getSplitInterval(list) <= getPossibleMessages(list, page) || page < 1) {
+	public static boolean isNotAnInt(String string) {
+		try {
+			Integer.parseInt(string);
+		} catch (NumberFormatException e) {
 			return true;
 		}
 		return false;
@@ -73,57 +92,26 @@ public class Utils {
 		return;
 	}
 
-	public static void sendHeader(CommandSender sender, String list, int page, String name) {
-		if (help.getConfig().getBoolean(list + ".display-header")) {
-			if (help.getConfig().getBoolean(list + ".show-header-on-last-page") == false && isInvalid(list, page + 1)) {
+	public static void sendCaption(CommandSender sender, String list, int page, String type) {
+		if (help.getConfig().getBoolean(list + ".display-" + type)) {
+			if (help.getConfig().getBoolean(list + ".show-" + type + "-on-last-page") == false && isInvalid(list, page + 1)) {
 				return;
 			}
-			String header = ChatColor.translateAlternateColorCodes('&', help.getConfig().getString(list + ".header").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))).replace("%NEXTPAGE", Integer.toString(page + 1)).replace("%LIST", name));
-			sender.sendMessage(header);
+			String caption = ChatColor.translateAlternateColorCodes('&', help.getConfig().getString(list + "." + type).replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))).replace("%NEXTPAGE", Integer.toString(page + 1)));
+			sender.sendMessage(caption);
 		} else {
 			return;
 		}
 	}
 
-	public static void sendFooter(CommandSender sender, String list, int page, String name) {
-		if (help.getConfig().getBoolean(list + ".display-footer")) {
-			if (help.getConfig().getBoolean(list + ".show-footer-on-last-page") == false && isInvalid(list, page + 1)) {
-				return;
-			}
-			String footer = ChatColor.translateAlternateColorCodes('&', help.getConfig().getString(list + ".footer").replace("%CURRENTPAGE", Integer.toString(page)).replace("%TOTALPAGES", Integer.toString(getTotalPages(list))).replace("%NEXTPAGE", Integer.toString(page + 1)).replace("%LIST", name));
-			sender.sendMessage(footer);
-		} else {
-			return;
-		}
+	public static void sendList(CommandSender sender, String list, int page) {
+		sendCaption(sender, list, page, "header");
+		getPage(sender, list, page);
+		sendCaption(sender, list, page, "footer");
 	}
 
-	public static void getPage(CommandSender sender, String list, int page) {
-
-		String message = "";
-
-		if (getList(list).size() <= getPossibleMessages(list, page)) {
-			int modulus = getPossibleMessages(list, page) - getList(list).size();
-			List<String> sublist = getList(list).subList(getPossibleMessages(list, page) - getSplitInterval(list), getPossibleMessages(list, page) - modulus);
-
-			for (int i = 0; i < sublist.size(); i++) {
-				message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
-				sender.sendMessage(message);
-			}
-			return;
-		}
-
-		List<String> sublist = getList(list).subList(getPossibleMessages(list, page) - getSplitInterval(list), getPossibleMessages(list, page));
-		for (int i = 0; i < sublist.size(); i++) {
-			message = ChatColor.translateAlternateColorCodes('&', sublist.get(i));
-			sender.sendMessage(message);
-		}
-		return;
-	}
-
-	public static void sendList(CommandSender sender, String list, String type, int page) {
-		sendHeader(sender, type + list, page, list);
-		getPage(sender, type + list, page);
-		sendFooter(sender, type + list, page, list);
+	public Utils(Help help) {
+		Utils.help = help;
 	}
 
 }

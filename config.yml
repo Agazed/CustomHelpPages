@@ -1,11 +1,11 @@
 # Made by Agazed.
 # Visit me @ agazed.net!
-
+ 
 # ---------- GROUP LISTS ---------- #
-# You can assign different groups different lists with "help.list.<list>
-
+# You can assign different groups different lists with "help.group.<list>
+ 
 groups:
-
+ 
   # This is the default list. People who have access to this list either have multiple list permissions or no list permissions.
   default:
     # How many help messages do you want on one page?
@@ -14,20 +14,20 @@ groups:
     display-header: true
     #Shall the header be displayed on the last page?
     show-header-on-last-page: true
-    # Top header message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE, %LIST.
+    # Top header message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE.
     header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
     # Do you want to display the bottom footer message?
     display-footer: true
     #Shall the footer be displayed on the last page?
     show-footer-on-last-page: false
-    # Bottom footer message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE, %LIST.
+    # Bottom footer message. Available vars: %CURRENTPAGE, %TOTALPAGES, %NEXTPAGE.
     footer: '&7Type /help %NEXTPAGE to get to the next page'
     messages:
     - 'A message'
     - 'Another message'
     - '&2Colored message!'
     - 'The list goes on...'
-
+ 
   # Example: To grant access to this list, grant the permission "help.group.test".
   test:
     messages-per-page: 8
@@ -39,11 +39,11 @@ groups:
     footer: '&7Type /help %NEXTPAGE to get to the next page'
     messages:
     - 'Test list!'
-    
+ 
 # ---------- PAGE LISTS ---------- #
-
+ 
 pages:
-
+ 
   # Custom page. Access with /help cool. Permission is "help.page.cool".
   cool:
     messages-per-page: 8
@@ -52,6 +52,6 @@ pages:
     header: '&7Page: %CURRENTPAGE/%TOTALPAGES'
     display-footer: true
     show-footer-on-last-page: false
-    footer: '&7Type /help %LIST %NEXTPAGE to get to the next page'
+    footer: '&7Type /help cool %NEXTPAGE to get to the next page'
     messages:
     - 'Sick bruh.'

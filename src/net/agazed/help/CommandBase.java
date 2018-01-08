@@ -20,7 +20,7 @@ public class CommandBase implements CommandExecutor {
 			}
 
 			if (args.length == 0) {
-				Utils.sendList(sender, Utils.getListGroup(sender), g, 1);
+				Utils.sendList(sender, g + Utils.getListGroup(sender), 1);
 				return true;
 			}
 
@@ -43,7 +43,7 @@ public class CommandBase implements CommandExecutor {
 						return true;
 					}
 
-					Utils.sendList(sender, args[0], p, 1);
+					Utils.sendList(sender, p + args[0], 1);
 					return true;
 				}
 
@@ -54,7 +54,7 @@ public class CommandBase implements CommandExecutor {
 					return true;
 				}
 
-				Utils.sendList(sender, Utils.getListGroup(sender), g, page);
+				Utils.sendList(sender, g + Utils.getListGroup(sender), page);
 				return true;
 			}
 
@@ -72,7 +72,7 @@ public class CommandBase implements CommandExecutor {
 						return true;
 					}
 
-					Utils.sendList(sender, args[1], g, 1);
+					Utils.sendList(sender, g + args[1], 1);
 					return true;
 				}
 
@@ -98,7 +98,7 @@ public class CommandBase implements CommandExecutor {
 					return true;
 				}
 
-				Utils.sendList(sender, args[0], p, page);
+				Utils.sendList(sender, p + args[0], page);
 				return true;
 			}
 
@@ -126,7 +126,7 @@ public class CommandBase implements CommandExecutor {
 					return true;
 				}
 
-				Utils.sendList(sender, args[1], g, page);
+				Utils.sendList(sender, g + args[1], page);
 				return true;
 
 			}
